@@ -20,6 +20,9 @@ public class Tema {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
+	
+	
 	@NotNull
 	private String descricao;
 	

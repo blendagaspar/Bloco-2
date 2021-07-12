@@ -34,27 +34,21 @@ public class UsuarioService {
 public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
 		
 		
-	/**
-	 * Lanço uma Exception do tipo Response Status Bad Request
-	 */
-	if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
-		throw new ResponseStatusException(
-			HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
+		if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
+			throw new ResponseStatusException(
+		          	HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
+
+		int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
 	
-	/**
-	 * Calcular a idade (em anos) através do método between, da Classe Period
-	 */
-	
-	 int idade = Period.between(usuario.getDatanascimento(), LocalDate.now()).getYears();
-	
-	/**
-	 * Verifico se a iade é menor de 18. Caso positivo,
-	 * Lanço uma Exception do tipo Response Status Bad Request 
-	 */
-	
-	 if(idade < 18)
-		throw new ResponseStatusException(
+		if(idade < 18)
+			throw new ResponseStatusException(
 					HttpStatus.BAD_REQUEST, "Usuário menor de 18 anos", null);
+			
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		String senhaEncoder = encoder.encode(usuario.getSenha());
+		usuario.setSenha(senhaEncoder);
 
 		return Optional.of(usuarioRepository.save(usuario));
 	}
@@ -63,6 +57,12 @@ public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
 public Optional<Usuario> atualizarUsuario(Usuario usuario){
 	
 	if(usuarioRepository.findById(usuario.getId()).isPresent()) {
+		
+		int idade = Period.between(usuario.getDataNascimento(), LocalDate.now()).getYears();
+		
+		if(idade < 18)
+			throw new ResponseStatusException(
+						HttpStatus.BAD_REQUEST, "Usuário menor de 18 anos", null);
 				
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
@@ -79,6 +79,7 @@ public Optional<Usuario> atualizarUsuario(Usuario usuario){
 	}
 	
 }
+
 
 public Optional<UsuarioLogin> logarUsuario(Optional<UsuarioLogin> usuarioLogin) {
 
@@ -100,28 +101,9 @@ public Optional<UsuarioLogin> logarUsuario(Optional<UsuarioLogin> usuarioLogin) 
 
 		}
 	}
-	return null;
+	throw new ResponseStatusException(
+			HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos!", null);
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

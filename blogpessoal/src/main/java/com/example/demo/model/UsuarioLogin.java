@@ -1,10 +1,5 @@
 package com.example.demo.model;
 
-
-
-
-
-
 public class UsuarioLogin {
 
 	
@@ -47,10 +42,6 @@ public class UsuarioLogin {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
-	
-	
-	
 	
 	
 }
