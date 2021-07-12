@@ -45,7 +45,7 @@ public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
 	 * Calcular a idade (em anos) através do método between, da Classe Period
 	 */
 	
-	 int idade = Period.between(usuario.getDataAniversario(), LocalDate.now()).getYears();
+	 int idade = Period.between(usuario.getDatanascimento(), LocalDate.now()).getYears();
 	
 	/**
 	 * Verifico se a iade é menor de 18. Caso positivo,
