@@ -13,12 +13,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired  //injeção de independencia 
-	private UserDetailsServiceImpl service;
+	private UserDetailsServiceImpl userDetailsService;
 
-	@Override //sobrescritura de metodo
+	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(service);
+		auth.userDetailsService(userDetailsService);
 		
+		auth.inMemoryAuthentication()
+		.withUser("root")
+		.password(passwordEncoder().encode("root"))
+		.authorities("ROLE_USER");
+	
 	}
 	
 	@Bean
